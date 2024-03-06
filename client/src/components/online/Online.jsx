@@ -7,8 +7,8 @@ export default function Online({ user }) {
       <div className="rightbarProfileImgContainer">
         <img
           src={user.profilePicture}
-          alt="profile picture"
           className="rightbarProfileImg"
+          alt=""
         />
         <span className="rightbarOnline"></span>
       </div>

@@ -5,8 +5,8 @@ export default function CloseFriend({ user }) {
     <li className="sidebarFriend">
       <img
         src={user.profilePicture}
-        alt="friend"
         className="sidebarFriendImg"
+        alt=""
       />
       <span className="sidebarFriendName">{user.username}</span>
     </li>
