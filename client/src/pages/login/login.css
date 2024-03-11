@@ -78,6 +78,7 @@
   height: 50px;
   width: 60%;
   align-self: center;
+  text-align: center;
   border-radius: 10px;
   border: none;
   background-color: #42b72a;
@@ -85,4 +86,5 @@
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
+  text-decoration: none;
 }
