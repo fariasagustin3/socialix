@@ -25,7 +25,7 @@ export default function Register() {
       };
 
       try {
-        await axios.post("http://localhost:8800/api/auth/register", user);
+        await axios.post(process.env.REACT_APP_API + "auth/register", user);
         navigate("/login")
       } catch (error) {
         console.log(error)
