@@ -20,3 +20,19 @@ export const loginFailure = (error) => {
     payload: error,
   }
 }
+
+// when user follow other user
+export const follow = (userId) => {
+  return {
+    type: "FOLLOW",
+    payload: userId,
+  }
+}
+
+// when user unfollow other user
+export const unfollow = (userId) => {
+  return {
+    type: "UNFOLLOW",
+    payload: userId,
+  }
+}
