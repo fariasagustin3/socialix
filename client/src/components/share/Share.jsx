@@ -10,7 +10,6 @@ import Cancel from '@mui/icons-material/Cancel'
 
 export default function Share() {
   const { user } = useContext(AuthContext);
-  const PUBLIC_FOLDER = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState();
 
