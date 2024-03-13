@@ -42,7 +42,7 @@ export default function Post({ post }) {
         <div className="postTop">
           <div className="postTopLeft">
             <Link to={`/profile/${user?.username}`} style={{ cursor: 'pointer' }}>
-              <img src={user?.profilePicture ? PUBLIC_FOLDER + user?.profilePicture : PUBLIC_FOLDER + "person/noAvatar.png"} alt="" className="postProfileImg" />
+              <img src={user.profilePicture ? user.profilePicture : "/assets/person/noAvatar.png"} alt="" className="postProfileImg" />
             </Link>
             <span className="postUsername">{user?.username} -</span>
             <span className="postDate">{format(post?.createdAt)}</span>
@@ -53,12 +53,12 @@ export default function Post({ post }) {
         </div>
         <div className="postCenter">
           <span className="postText">{post?.desc}</span>
-          <img className="postImg" src={PUBLIC_FOLDER + post?.img} alt="" />
+          <img className="postImg" src={post?.img} alt="" />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img onClick={likeHandler} className="likeIcon" src={`${PUBLIC_FOLDER}like.png`} alt="" />
-            <img onClick={likeHandler} className="likeIcon" src={`${PUBLIC_FOLDER}heart.png`} alt="" />
+            <img onClick={likeHandler} className="likeIcon" src={"assets/like.png"} alt="" />
+            <img onClick={likeHandler} className="likeIcon" src={"assets/heart.png"} alt="" />
             <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">

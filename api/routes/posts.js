@@ -1,5 +1,7 @@
+const cloudinary = require("../cloudinary/cloudinary");
 const Post = require("../models/Post");
 const User = require("../models/User");
+const upload = require("../multer/multer");
 
 const router = require("express").Router();
 
@@ -12,6 +14,23 @@ router.get("/list", async (req, res) => {
     console.log(err);
     res.status(500).json({ error: err.message })
   }
+});
+
+// upload an image to cloudinay and send the url
+router.post('/upload', upload.single('file'), (req, res) => {
+  console.log(cloudinary)
+  cloudinary.uploader.upload(req.file.path, (err, result) => {
+    if(err) {
+      console.log(err);
+      return res.status(500).json({ error: err });
+    } else {
+      return res.status(200).json({
+        status: "OK",
+        message: "Uploaded",
+        data: result.url
+      })
+    }
+  })
 });
 
 // create a post route

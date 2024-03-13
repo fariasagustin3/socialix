@@ -1,19 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const multer = require("multer");
 const cors = require("cors");
-const path = require("path")
+require("dotenv").config();
 
 // routes imports
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 
+// initialize express app
 const app = express();
-dotenv.config();
 
 // connection to mongoose
 const connectionDB = async () => {
@@ -29,31 +27,7 @@ const connectionDB = async () => {
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("dev"));
-app.use("/images", express.static(path.join(__dirname, "public/images")));
-app.use(cors({
-  origin: '*'
-}));
-
-// multer storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/images");
-  },
-  filename: (req, file, cb) => {
-    cb(null, req.body.name);
-  },
-});
-
-// multer upload
-const upload = multer({ storage: storage });
-// provitional route
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  try {
-    return res.status(200).json("File uploded successfully");
-  } catch (error) {
-    console.error(error);
-  }
-});
+app.use(cors());
 
 // routes
 app.use("/api/users", userRoute);

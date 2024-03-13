@@ -20,27 +20,29 @@ export default function Share() {
       userId: user._id,
       desc: desc.current.value,
     };
-    if (file) {
-      const data = new FormData();
-      const fileName = Date.now() + file.name;
-      data.append("name", fileName);
-      data.append("file", file);
-      newPost.img = fileName;
-      console.log(newPost);
-      try {
-        await axios.post(process.env.REACT_APP_API + "upload", data);
-      } catch (err) {}
+
+    if(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+  
+      const res = await axios.post("http://localhost:8800/api/posts/upload", formData);
+      if(res.data.status === "OK") {
+        newPost.img = res.data.data;
+        await axios.post("http://localhost:8800/api/posts", newPost);
+        window.location.reload()
+      }
+    } else {
+      await axios.post("http://localhost:8800/api/posts", newPost)
+      window.location.reload()
     }
-    try {
-      await axios.post(process.env.REACT_APP_API + "posts", newPost);
-    } catch (err) {}
+
   };
 
   return (
     <div className='share'>
       <div className="shareWrapper">
         <div className="shareTop">
-          <img src={ user.profilePicture ? PUBLIC_FOLDER + user.profilePicture : PUBLIC_FOLDER + "person/noAvatar.png" } className="shareProfilePicture" alt="" />
+          <img src={ user.profilePicture ?  user.profilePicture : "/assets/person/noAvatar.png" } className="shareProfilePicture" alt="" />
           <input ref={desc} placeholder={`What's in your mind, ${user.username}?`} type="text" className="shareInput" />
         </div>
         <hr className="shareHr" />

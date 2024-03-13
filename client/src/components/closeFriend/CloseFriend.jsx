@@ -6,7 +6,7 @@ export default function CloseFriend({ user }) {
   return (
     <li className="sidebarFriend">
       <img
-        src={PUBLIC_FOLDER + user.profilePicture}
+        src={user?.profilePicture || "/assets/person/noAvatar.png"}
         className="sidebarFriendImg"
         alt=""
       />
