@@ -62,6 +62,15 @@
   font-weight: 300;
 }
 
+.rightbarInfoValueInput {
+  border: none;
+  border-bottom: 1px solid gray;
+}
+
+.rightbarInfoValueInput:focus {
+  outline: none;
+}
+
 .righbarFollowings {
   display: flex;
   flex-wrap: wrap;

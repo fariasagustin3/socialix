@@ -9,17 +9,16 @@ import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 
 export default function Rightbar({ user }) {
-  const PUBLIC_FOLDER = process.env.REACT_APP_PUBLIC_FOLDER;
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext)
   const [followed, setFollowed] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setFollowed(currentUser.followings.includes(user?._id))
   }, [currentUser, user?._id])
 
   useEffect(() => {
-    console.log(user)
     const getFriends = async() => {
       try {
         const res = await axios.get(`http://localhost:8800/api/users/friends/${user?._id}`);
@@ -86,21 +85,33 @@ export default function Rightbar({ user }) {
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">City:</span>
-            <span className="rightbarInfoValue">{user?.city}</span>
+            {editMode ? (
+              <input type="text" className="rightbarInfoValueInput" value={user?.city} placeholder="Type your city" />
+            ) : (
+              <span className="rightbarInfoValue">{user?.city}</span>
+            )}
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">From:</span>
-            <span className="rightbarInfoValue">{user?.from}</span>
+            {editMode ? (
+              <input type="text" className="rightbarInfoValueInput" value={user?.from} placeholder="Type where are you from" />
+            ) : (
+              <span className="rightbarInfoValue">{user?.from}</span>
+            )}
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Relationship:</span>
-            <span className="rightbarInfoValue">{user?.relationship === 1 ? "Single" : user?.relationship === 2 ? "Married" : "Widow"}</span>
+            {editMode ? (
+              <input type="text" className="rightbarInfoValueInput" value={user?.relationship} placeholder="a number between 1/2/3" />
+            ) : (
+              <span className="rightbarInfoValue">{user?.relationship === 1 ? "Single" : user?.relationship === 2 ? "Married" : "Widow"}</span>
+            )}
           </div>
         </div>
         <h4>User friends</h4>
         <div className="righbarFollowings">
           {friends.map((friend) => (
-            <Link to={`/profile/${friend?.username}`} style={{ textDecoration: 'none' }}>
+            <Link key={friend?._id} to={`/profile/${friend?.username}`} style={{ textDecoration: 'none' }}>
               <div className="rightbarFollowing">
                 <img src={friend.profilePicture ? friend.profilePicture : "/assets/person/noAvatar.png"} className="rightbarFollowingImg" alt="" />
                 <span className="rightbarFollowingName">{friend.username}</span>

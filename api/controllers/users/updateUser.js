@@ -12,10 +12,11 @@ const updateUser = async(req, res) => {
       }
     }
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, {
+      const newUser = await User.findByIdAndUpdate(req.params.id, {
         $set: req.body,
+        $new: true,
       });
-      res.status(200).json("Account has been updated");
+      res.status(200).json(newUser);
     } catch (err) {
       return res.status(500).json(err);
     }

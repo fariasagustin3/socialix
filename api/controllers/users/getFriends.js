@@ -2,7 +2,7 @@ const User = require("../../models/User")
 
 const getFriends = async(req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req?.params?.userId);
     const friends = await Promise.all(
       user.followings.map((friendId) => {
         return User.findById(friendId);
@@ -10,7 +10,6 @@ const getFriends = async(req, res) => {
     );
 
     let friendList = [];
-    console.log(friends)
     friends.map((friend) => {
       const { _id, username, profilePicture } = friend;
       friendList.push({ _id, username, profilePicture });

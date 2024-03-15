@@ -1,6 +1,6 @@
 const cloudinary = require("../../cloudinary/cloudinary")
 
-const uploadImage = (req, res) => {
+const uploadCoverPicture = async(req, res) => {
   cloudinary.uploader.upload(req.file.path, (err, result) => {
     if(err) {
       console.log(err);
@@ -15,4 +15,4 @@ const uploadImage = (req, res) => {
   })
 }
 
-module.exports = uploadImage;
+module.exports = uploadCoverPicture;

@@ -1,3 +1,41 @@
+.profileContainer {
+  position: relative;
+}
+
+.profileEditButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  opacity: 0.8;
+  border: none;
+  border-radius: 50%;
+  padding: 10px 10px;
+  background-color: #1877F2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profileConfirmButton {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  z-index: 10;
+  opacity: 0.8;
+  border: none;
+  border-radius: 50%;
+  padding: 10px 10px;
+  background-color: #1877F2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
 .profile {
   display: flex;
 }
@@ -15,6 +53,22 @@
   width: 100%;
   height: 250px;
   object-fit: cover;
+}
+
+.coverImgInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.profilePictureContainer {
+  /* position: relative; */
+}
+
+.profileImgInput {
+  position: absolute;
+  display: none;
 }
 
 .profileUserImg {
@@ -39,6 +93,30 @@
 
 .profileInfoName {
   font-size: 24px;
+}
+
+.profileInfoNameInput {
+  font-size: 24px;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid gray;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.profileInfoNameInput:focus {
+  outline: none;
+}
+
+.profileInfoDescInput {
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid gray;
+  margin-bottom: 5px;
+}
+
+.profileInfoDescInput:focus {
+  outline: none;
 }
 
 .profileInfoDesc {
