@@ -1,61 +1,109 @@
 import "./rightbar.css";
 import { Users } from "../../dummyData";
 import Online from "../online/Online";
-import { useContext, useEffect, useState } from "react";
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
+import Cancel from "@mui/icons-material/Cancel";
+import Check from "@mui/icons-material/Check";
+import Edit from "@mui/icons-material/Edit";
+import { useParams } from "react-router-dom";
 
 export default function Rightbar({ user }) {
   const [friends, setFriends] = useState([]);
-  const { user: currentUser, dispatch } = useContext(AuthContext)
+  const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const usr = localStorage.getItem("user");
+  const userLoggedIn = JSON.parse(usr);
 
-  useEffect(() => {
-    setFollowed(currentUser.followings.includes(user?._id))
-  }, [currentUser, user?._id])
+  const editCity = useRef()
+  const editFrom = useRef()
+  const editRelationship = useRef()
 
-  useEffect(() => {
-    const getFriends = async() => {
-      try {
-        const res = await axios.get(`http://localhost:8800/api/users/friends/${user?._id}`);
-        setFriends(res?.data);
-      } catch(err) {
-        console.log(err);
-      }
+  // function that replace the new data from local storage
+  const handleSession = (userData) => {
+    console.log("userData", userData)
+
+    const userSession = localStorage.getItem("user");
+    const userSessionParsed = JSON.parse(userSession);
+
+    userSessionParsed.city = userData.city;
+    userSessionParsed.from = userData.from;
+    userSessionParsed.relationship = userData.relationship;
+
+    const userSessionStringified = JSON.stringify(userSessionParsed);
+    localStorage.setItem("user", userSessionStringified);
+
+    window.location.reload()
+  }
+
+  // function that submit edit form
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    const editData = {
+      userId: userLoggedIn._id,
+      city: editCity.current.value || user.city,
+      from: editFrom.current.value || user.from,
+      relationship: parseInt(editRelationship.current.value) ||user.relationship,
     }
 
-    getFriends();
-  }, [user?._id])
-
-  const handleClick = async(e) => {
     try {
-      if(followed) {
-        await axios.put(`http://localhost:8800/api/users/${user._id}/unfollow`, { userId: currentUser._id})
-        dispatch({ type: "UNFOLLOW", payload: user?._id })
-      } else {
-        await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, { userId: currentUser._id})
-        dispatch({ type: "FOLLOW", payload: user?._id })
-      }
+      const res = await axios.put(`${process.env.REACT_APP_API}users/${userLoggedIn._id}`, editData);
+      res.data && handleSession(res.data)
     } catch(err) {
       console.log(err)
     }
-
-    setFollowed(!followed)
   }
+
+  useEffect(() => {
+    setFollowed(currentUser.followings.includes(user?._id));
+  }, [currentUser, user?._id]);
+
+  useEffect(() => {
+    const getFriends = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8800/api/users/friends/${user?._id}`
+        );
+        setFriends(res?.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getFriends();
+  }, [user?._id]);
+
+  const handleClick = async (e) => {
+    try {
+      if (followed) {
+        await axios.put(
+          `http://localhost:8800/api/users/${user._id}/unfollow`,
+          { userId: currentUser._id }
+        );
+        dispatch({ type: "UNFOLLOW", payload: user?._id });
+      } else {
+        await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "FOLLOW", payload: user?._id });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+    setFollowed(!followed);
+  };
 
   const HomeRightBar = () => {
     return (
       <>
         <div className="birthdayContainer">
-          <img
-            className="birthdayImg"
-            src="/assets/gift.png"
-            alt=""
-          />
+          <img className="birthdayImg" src="/assets/gift.png" alt="" />
           <span className="birthdayText">
             <b>Pola Foster</b> and <b>3 other friends</b> have a birthday today
           </span>
@@ -72,66 +120,115 @@ export default function Rightbar({ user }) {
   };
 
   const ProfileRightbar = () => {
-    return(
+    return (
       <>
-      {user.username !== currentUser.username && (
-        <button className="rightbarFollowButton" onClick={handleClick}>
-          {followed ? "Unfollow" : "Follow"}
-          {followed ? <Remove /> : <Add />}
-          
-        </button>
-      )}
-        <h4 className="rightbarTitle">User information</h4>
-        <div className="rightbarInfo">
+        {user.username !== currentUser.username && (
+          <button className="rightbarFollowButton" onClick={handleClick}>
+            {followed ? "Unfollow" : "Follow"}
+            {followed ? <Remove /> : <Add />}
+          </button>
+        )}
+        <div className="rightbarTitleContainer">
+          <h4 className="rightbarTitle">User information</h4>
+          {user._id === userLoggedIn._id && (
+            <button className="rightbarEditButton">
+              {editMode ? (
+                <Cancel
+                  className="rightbarButton"
+                  onClick={() => setEditMode(false)}
+                />
+              ) : (
+                <Edit
+                  className="rightbarButton"
+                  onClick={() => setEditMode(true)}
+                />
+              )}
+            </button>
+          )}
+          {editMode && (
+            <button onClick={handleEditSubmit} className="rightbarEditButton">
+              <Check className="rightbarButton" />
+            </button>
+          )}
+        </div>
+        <form className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">City:</span>
             {editMode ? (
-              <input type="text" className="rightbarInfoValueInput" value={user?.city} placeholder="Type your city" />
+              <input
+                type="text"
+                className="rightbarInfoValueInput"
+                placeholder="Type your city"
+                ref={editCity}
+              />
             ) : (
-              <span className="rightbarInfoValue">{user?.city}</span>
+              <span className="rightbarInfoValue">{userLoggedIn?.city}</span>
             )}
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">From:</span>
             {editMode ? (
-              <input type="text" className="rightbarInfoValueInput" value={user?.from} placeholder="Type where are you from" />
+              <input
+                type="text"
+                className="rightbarInfoValueInput"
+                placeholder="Type where are you from"
+                ref={editFrom}
+              />
             ) : (
-              <span className="rightbarInfoValue">{user?.from}</span>
+              <span className="rightbarInfoValue">{userLoggedIn?.from}</span>
             )}
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Relationship:</span>
             {editMode ? (
-              <input type="text" className="rightbarInfoValueInput" value={user?.relationship} placeholder="a number between 1/2/3" />
+              <input
+                type="text"
+                className="rightbarInfoValueInput"
+                placeholder="a number between 1/2/3"
+                ref={editRelationship}
+              />
             ) : (
-              <span className="rightbarInfoValue">{user?.relationship === 1 ? "Single" : user?.relationship === 2 ? "Married" : "Widow"}</span>
+              <span className="rightbarInfoValue">
+                {userLoggedIn?.relationship === 1
+                  ? "Single"
+                  : userLoggedIn?.relationship === 2
+                  ? "Married"
+                  : "Widow"}
+              </span>
             )}
           </div>
-        </div>
+        </form>
         <h4>User friends</h4>
         <div className="righbarFollowings">
           {friends.map((friend) => (
-            <Link key={friend?._id} to={`/profile/${friend?.username}`} style={{ textDecoration: 'none' }}>
+            <Link
+              key={friend?._id}
+              to={`/profile/${friend?.username}`}
+              style={{ textDecoration: "none" }}
+            >
               <div className="rightbarFollowing">
-                <img src={friend.profilePicture ? friend.profilePicture : "/assets/person/noAvatar.png"} className="rightbarFollowingImg" alt="" />
+                <img
+                  src={
+                    friend.profilePicture
+                      ? friend.profilePicture
+                      : "/assets/person/noAvatar.png"
+                  }
+                  className="rightbarFollowingImg"
+                  alt=""
+                />
                 <span className="rightbarFollowingName">{friend.username}</span>
               </div>
             </Link>
           ))}
-          
         </div>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <div className="rightbar">
       <div className="rightbarWrapper">
-        {user ? (
-          <ProfileRightbar />
-        ) : (
-          <HomeRightBar />
-        )}
+        {userLoggedIn ? <ProfileRightbar /> : <HomeRightBar />}
       </div>
     </div>
   );

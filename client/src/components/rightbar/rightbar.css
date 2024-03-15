@@ -116,3 +116,27 @@
 .rightbarFollowButton:focus {
   outline: none;
 }
+
+.rightbarTitleContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rightbarButton {
+  width: 3px;
+}
+
+.rightbarEditButton {
+  opacity: 0.8;
+  border: none;
+  border-radius: 50%;
+  padding: 5px 5px;
+  background-color: #1877F2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
