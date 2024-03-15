@@ -10,7 +10,7 @@ import Remove from "@mui/icons-material/Remove";
 import Cancel from "@mui/icons-material/Cancel";
 import Check from "@mui/icons-material/Check";
 import Edit from "@mui/icons-material/Edit";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Rightbar({ user }) {
   const [friends, setFriends] = useState([]);
@@ -19,14 +19,15 @@ export default function Rightbar({ user }) {
   const [editMode, setEditMode] = useState(false);
   const usr = localStorage.getItem("user");
   const userLoggedIn = JSON.parse(usr);
+  const location = useLocation();
 
-  const editCity = useRef()
-  const editFrom = useRef()
-  const editRelationship = useRef()
+  const editCity = useRef();
+  const editFrom = useRef();
+  const editRelationship = useRef();
 
   // function that replace the new data from local storage
   const handleSession = (userData) => {
-    console.log("userData", userData)
+    console.log("userData", userData);
 
     const userSession = localStorage.getItem("user");
     const userSessionParsed = JSON.parse(userSession);
@@ -38,8 +39,8 @@ export default function Rightbar({ user }) {
     const userSessionStringified = JSON.stringify(userSessionParsed);
     localStorage.setItem("user", userSessionStringified);
 
-    window.location.reload()
-  }
+    window.location.reload();
+  };
 
   // function that submit edit form
   const handleEditSubmit = async (e) => {
@@ -48,22 +49,27 @@ export default function Rightbar({ user }) {
       userId: userLoggedIn._id,
       city: editCity.current.value || user.city,
       from: editFrom.current.value || user.from,
-      relationship: parseInt(editRelationship.current.value) ||user.relationship,
-    }
+      relationship:
+        parseInt(editRelationship.current.value) || user.relationship,
+    };
 
     try {
-      const res = await axios.put(`${process.env.REACT_APP_API}users/${userLoggedIn._id}`, editData);
-      res.data && handleSession(res.data)
-    } catch(err) {
-      console.log(err)
+      const res = await axios.put(
+        `${process.env.REACT_APP_API}users/${userLoggedIn._id}`,
+        editData
+      );
+      res.data && handleSession(res.data);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     setFollowed(currentUser.followings.includes(user?._id));
   }, [currentUser, user?._id]);
 
   useEffect(() => {
+    console.log("location: ", location);
     const getFriends = async () => {
       try {
         const res = await axios.get(
@@ -82,13 +88,13 @@ export default function Rightbar({ user }) {
     try {
       if (followed) {
         await axios.put(
-          `http://localhost:8800/api/users/${user._id}/unfollow`,
-          { userId: currentUser._id }
+          `http://localhost:8800/api/users/${user?._id}/unfollow`,
+          { userId: currentUser?._id }
         );
         dispatch({ type: "UNFOLLOW", payload: user?._id });
       } else {
-        await axios.put(`http://localhost:8800/api/users/${user._id}/follow`, {
-          userId: currentUser._id,
+        await axios.put(`http://localhost:8800/api/users/${user?._id}/follow`, {
+          userId: currentUser?._id,
         });
         dispatch({ type: "FOLLOW", payload: user?._id });
       }
@@ -112,7 +118,7 @@ export default function Rightbar({ user }) {
         <h4 className="rightbarTitle">Online Friends</h4>
         <ul className="rightbarFriendList">
           {Users.map((user) => (
-            <Online key={user.id} user={user} />
+            <Online key={user?.id} user={user} />
           ))}
         </ul>
       </>
@@ -122,7 +128,7 @@ export default function Rightbar({ user }) {
   const ProfileRightbar = () => {
     return (
       <>
-        {user.username !== currentUser.username && (
+        {user?.username !== currentUser?.username && (
           <button className="rightbarFollowButton" onClick={handleClick}>
             {followed ? "Unfollow" : "Follow"}
             {followed ? <Remove /> : <Add />}
@@ -130,7 +136,7 @@ export default function Rightbar({ user }) {
         )}
         <div className="rightbarTitleContainer">
           <h4 className="rightbarTitle">User information</h4>
-          {user._id === userLoggedIn._id && (
+          {user?._id === userLoggedIn?._id && (
             <button className="rightbarEditButton">
               {editMode ? (
                 <Cancel
@@ -201,24 +207,23 @@ export default function Rightbar({ user }) {
         <h4>User friends</h4>
         <div className="righbarFollowings">
           {friends.map((friend) => (
-            <Link
-              key={friend?._id}
-              to={`/profile/${friend?.username}`}
-              style={{ textDecoration: "none" }}
+            <div
+              className="rightbarFollowing"
+              onClick={() =>
+                (window.location.href = `http://localhost:3000/profile/${friend.username}`)
+              }
             >
-              <div className="rightbarFollowing">
-                <img
-                  src={
-                    friend.profilePicture
-                      ? friend.profilePicture
-                      : "/assets/person/noAvatar.png"
-                  }
-                  className="rightbarFollowingImg"
-                  alt=""
-                />
-                <span className="rightbarFollowingName">{friend.username}</span>
-              </div>
-            </Link>
+              <img
+                src={
+                  friend.profilePicture
+                    ? friend.profilePicture
+                    : "/assets/person/noAvatar.png"
+                }
+                className="rightbarFollowingImg"
+                alt=""
+              />
+              <span className="rightbarFollowingName">{friend.username}</span>
+            </div>
           ))}
         </div>
       </>
@@ -228,7 +233,11 @@ export default function Rightbar({ user }) {
   return (
     <div className="rightbar">
       <div className="rightbarWrapper">
-        {userLoggedIn ? <ProfileRightbar /> : <HomeRightBar />}
+        {userLoggedIn && location.pathname !== "/" ? (
+          <ProfileRightbar />
+        ) : (
+          <HomeRightBar />
+        )}
       </div>
     </div>
   );

@@ -9,9 +9,17 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import EventIcon from '@mui/icons-material/Event';
 import SchoolIcon from '@mui/icons-material/School';
 import CloseFriend from '../closeFriend/CloseFriend';
+import PowerSettingsNew from '@mui/icons-material/PowerSettingsNew';
 import { Users } from '../../dummyData';
 
 export default function Sidebar() {
+
+  // function to close session
+  const closeSession = () => {
+    localStorage.removeItem("user");
+    window.location.reload();
+  }
+
   return (
     <div className='sidebar'>
       <div className="sidebarWrapper">
@@ -53,7 +61,10 @@ export default function Sidebar() {
             <span className="sidebarListItemText">Courses</span>
           </li>
         </ul>
-        <button className="sidebarButton">Show More</button>
+        <button className="sidebarButton" onClick={closeSession}>
+          <PowerSettingsNew style={{ color: 'tomato', width: '20px', marginBottom: '3px' }} />
+          Close Session
+        </button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
           {Users.map((user) => (
