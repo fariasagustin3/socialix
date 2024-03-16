@@ -1,0 +1,94 @@
+.container {
+  padding-right: 20px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.commentInput {
+  width: 100%;
+  border-radius: 50px;
+  border: none;
+  background-color: rgb(236, 235, 235);
+  margin-right: 5px;
+  font-size: 12px;
+  padding: 5px 10px;
+  font-weight: 500;
+}
+
+.commentInput:focus {
+  outline: none;
+}
+
+.commentInput::placeholder {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.commentButton {
+  color: white;
+  background-color: #1877F2;
+  border: none;
+  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.commentContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+ 
+}
+
+.imgContainer {
+  width: 40px;
+  height: 40px;
+  align-self: start;
+}
+
+.commentPicture {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.userdataContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 10px;
+}
+
+.usernameContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.username {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.date {
+  font-size: 13px;
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.comment {
+  font-size: 12px;
+  white-space: pre-wrap;
+  line-height: 19px;
+  font-weight: 300;
+}
