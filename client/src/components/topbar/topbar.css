@@ -23,6 +23,7 @@
 
 .topbarCenter {
   flex: 5;
+  position: relative;
 }
 
 .searchbar {

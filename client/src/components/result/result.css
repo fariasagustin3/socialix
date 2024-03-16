@@ -1,0 +1,16 @@
+.resultContainer {
+  width: 100%;
+  max-height: 300px;
+  overflow-y: scroll;
+  border-bottom-left-radius: -50px;
+  border-bottom-right-radius: 5px;
+  background-color: white;
+  position: absolute;
+}
+
+.resultWrapper {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

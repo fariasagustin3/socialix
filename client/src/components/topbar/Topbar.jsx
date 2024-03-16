@@ -4,12 +4,22 @@ import SearchIcon from "@mui/icons-material/Search";
 import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import Result from "../result/Result";
 
 export default function Topbar() {
   const { user } = useContext(AuthContext);
-  const PUBLIC_FOLDER = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [results, setResults] = useState(false)
+  const [search, setSearch] = useState("")
+
+  useEffect(() => {
+    if(!search) {
+      setResults(false)
+    } else {
+      setResults(true)
+    }
+  }, [search])
 
   return (
     <div className="topbarContainer">
@@ -22,10 +32,14 @@ export default function Topbar() {
         <div className="searchbar">
           <SearchIcon className="searchIcon" />
           <input
-            placeholder="Search for friend, post or video"
+            placeholder="Search for friend"
             className="searchInput"
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+        {results && (
+          <Result username={search} />
+        )}
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">

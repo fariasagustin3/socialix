@@ -9,9 +9,13 @@ const followUser = require("../controllers/users/followUser");
 const unfollowUser = require("../controllers/users/unfollowUser");
 const uploadCoverPicture = require("../controllers/users/uploadCoverPicture");
 const uploadProfilePicture = require("../controllers/users/uploadProfilePicture");
+const getUserByQuerySearch = require("../controllers/users/getUserByQuerySearch");
 
 // get all users route
 router.get("/list", getAllUsers);
+
+// get users by query search
+router.get("/search", getUserByQuerySearch);
 
 // upload a cover image
 router.post("/cover/upload", upload.single("coverPicture"), uploadCoverPicture);
