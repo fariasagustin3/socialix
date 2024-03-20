@@ -1,0 +1,29 @@
+.noResponsiveContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noResponsiveTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+}
+
+.noResponsiveTitle {
+  font-weight: 300;
+  color: rgb(56, 56, 56);
+  text-align: center;
+}
+
+.cancelIcon {
+  width: 200px;
+  height: 200px;
+  color: white;
+  background-color: black;
+  border-radius: 50%;
+}
