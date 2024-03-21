@@ -52,10 +52,12 @@ export default function Topbar() {
             <span className="topbarIconBadge">1</span>
           </div>
 
-          <div className="topbarIconItem">
-            <ChatIcon />
-            <span className="topbarIconBadge">1</span>
-          </div>
+          <Link to="/messenger" style={{ color: 'inherit'}}>
+            <div className="topbarIconItem">
+              <ChatIcon />
+              <span className="topbarIconBadge">1</span>
+            </div>
+          </Link>
 
           <div className="topbarIconItem">
             <NotificationsIcon />

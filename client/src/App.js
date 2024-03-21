@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import { isMobile } from 'react-device-detect'
 import NoResponsive from "./pages/noResponsive/NoResponsive";
+import Messenger from "./pages/messenger/Messenger";
 
 function App() {
   const { user } = useContext(AuthContext)
@@ -23,6 +24,7 @@ function App() {
           <Route path="/profile/:username" element={user ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login /> } />
           <Route path="/register" element={user ? <Navigate to="/" /> : <Register /> } />
+          <Route path="/messenger" element={!user ? <Navigate to="/" /> : <Messenger /> } />
         </Routes>
       </BrowserRouter>
     );
