@@ -38,6 +38,11 @@ io.on("connection", (socket) => {
     });
   });
 
+  // get conversations
+  socket.on("getConversations", (data) => {
+    io.emit("getConversation", data)
+  })
+
   //when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected!");

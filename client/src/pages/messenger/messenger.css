@@ -73,6 +73,17 @@
   height: 100%;
 }
 
+.chatOnlineWrapper {
+  /* background-color: red; */
+}
+
+.onlineUsersTitle {
+  text-align: center;
+  font-weight: 500;
+  font-size: 15px;
+  color: rgb(83, 83, 83);
+}
+
 .noConversationText {
   position: absolute;
   top: 10%;

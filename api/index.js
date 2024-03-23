@@ -41,4 +41,5 @@ app.use("/api/messages", messagesRoute);
 app.listen(8800, async () => {
   console.log("Backend server is running")
   await connectionDB();
+
 }) // end

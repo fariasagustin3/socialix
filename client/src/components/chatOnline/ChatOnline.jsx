@@ -1,10 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./chatOnline.css";
+import { io } from "socket.io-client";
 
 export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
+  const socket = useRef()
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+  }, [])
 
   useEffect(() => {
     const getFriends = async () => {
@@ -31,7 +37,9 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
           senderId: currentId,
           receiverId: user._id
         });
-        if(newConv.status === 200) return setCurrentChat(newConv.data);
+        if(newConv.status === 200) {
+          setCurrentChat(newConv.data);
+        }
       } else {
         return setCurrentChat(res.data);
       }
